@@ -42,30 +42,39 @@ function setupIntialValues() {
 // Get the current values from the UI
 // Update the monthly payment
 function update() {
-  getCurrentUIValues();
-  updateMonthly(calculateMonthlyPayment());
+  const current = getCurrentUIValues();
+  updateMonthly(calculateMonthlyPayment(current));
 }
 
 // Given an object of values (a value has amount, years and rate ),
 // calculate the monthly payment.  The output should be a string
 // that always has 2 decimal places.
-function calculateMonthlyPayment() {
-  let periodicInterestRate = ((values.rate/100) / 12)
-  let n = values.years * 12
-  let topCalc = values.amount*periodicInterestRate
+function calculateMonthlyPayment(current) {
+  let periodicInterestRate = ((current.rate/100) / 12)
+  let n = current.years * 12
+  let topCalc = current.amount*periodicInterestRate
   let bottomCalc = 1 - ((1+periodicInterestRate)**(-1*n))
   
   let monthly = (topCalc/bottomCalc);
   monthly = monthly.toFixed(2);
   console.log(monthly)
 
-  return `${monthly}`
+  return monthly
 }
 
 // Given a string representing the monthly payment value,
 // update the UI to show the value.
-function updateMonthly(str) {
+function updateMonthly(monthly) {
   let monthlyDisplay = document.getElementById('monthly-payment');
-  monthlyDisplay.innerText = str
-  console.log(str)
+  monthlyDisplay.innerText = `${monthly}`
+  console.log(monthly)
 }
+
+
+function count(num) {
+    const converted = num;
+     if (converted.includes('.')) {
+        return converted.split('.')[1].length;
+     };
+     return 0;
+    }
